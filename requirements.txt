@@ -1,0 +1,28 @@
+# ── Core AI ───────────────────────────────────────────────────────────────────
+crewai[tools]==0.80.0
+openai==1.30.0
+langchain==0.2.3
+langchain-openai==0.1.8
+
+# ── Browser Automation ────────────────────────────────────────────────────────
+playwright==1.44.0
+
+# ── Google APIs ───────────────────────────────────────────────────────────────
+google-api-python-client==2.131.0
+google-auth-httplib2==0.2.0
+google-auth-oauthlib==1.2.0
+
+# ── Airtable ──────────────────────────────────────────────────────────────────
+pyairtable==2.3.3
+
+# ── Resume Parsing ────────────────────────────────────────────────────────────
+PyPDF2==3.0.1
+
+# ── Config & Utilities ────────────────────────────────────────────────────────
+python-dotenv==1.0.1
+pyyaml==6.0.1
+pydantic==2.7.1
+requests==2.31.0
+
+# ── Scheduling (optional — for cron alternative) ──────────────────────────────
+schedule==1.2.1

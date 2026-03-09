@@ -1,0 +1,76 @@
+# ─────────────────────────────────────────────
+#  Candidate Job Preferences
+# ─────────────────────────────────────────────
+
+candidate:
+  name: "Your Name"
+  email: "you@gmail.com"
+  phone: "+91-XXXXXXXXXX"
+  linkedin: "https://linkedin.com/in/yourprofile"
+  resume_path: "data/base_resume.pdf"
+  years_of_experience: 5
+
+target_roles:
+  - "Senior Software Engineer"
+  - "Backend Engineer"
+  - "Python Developer"
+  - "Full Stack Developer"
+  - "Software Development Engineer"
+
+locations:
+  - "Bangalore"
+  - "Hyderabad"
+  - "Pune"
+  - "Remote"
+
+skills:
+  primary:
+    - "Python"
+    - "Django"
+    - "FastAPI"
+    - "AWS"
+    - "PostgreSQL"
+  secondary:
+    - "Docker"
+    - "Kubernetes"
+    - "Redis"
+    - "React"
+    - "CI/CD"
+
+salary:
+  min_lpa: 20
+  max_lpa: 40
+  currency: "INR"
+
+job_type:
+  - "Full Time"
+  - "Hybrid"
+  - "Remote"
+
+experience_level:
+  - "Senior"
+  - "Lead"
+
+exclude_companies:
+  - "TCS"
+  - "Infosys"
+  - "Wipro"
+  - "HCL"
+  - "Cognizant"
+
+exclude_keywords:
+  - "internship"
+  - "unpaid"
+  - "trainee"
+
+platforms:
+  linkedin: true
+  naukri: true
+  indeed: true
+
+limits:
+  max_jobs_per_run: 15
+  min_relevance_score: 7
+  max_inmails_per_day: 15
+  max_cold_emails_per_day: 20
+  followup_after_days: 7

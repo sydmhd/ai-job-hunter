@@ -1,0 +1,83 @@
+name: 🤖 AI Job Hunter — Daily Run
+
+on:
+  # Run every weekday at 9:00 AM IST (3:30 AM UTC)
+  schedule:
+    - cron: '30 3 * * 1-5'
+  
+  # Allow manual trigger from GitHub Actions UI
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'Run mode'
+        required: true
+        default: 'full'
+        type: choice
+        options:
+          - full
+          - followups
+          - setup
+
+jobs:
+  job-hunt:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Install Playwright browsers
+        run: playwright install chromium --with-deps
+
+      - name: Create data directory & write secrets
+        run: |
+          mkdir -p data
+          echo '${{ secrets.GMAIL_CREDENTIALS_JSON }}' > data/gmail_credentials.json
+          echo '${{ secrets.GMAIL_TOKEN_JSON }}' > data/gmail_token.json
+
+      - name: Run AI Job Hunter
+        env:
+          OPENAI_API_KEY:       ${{ secrets.OPENAI_API_KEY }}
+          AIRTABLE_API_KEY:     ${{ secrets.AIRTABLE_API_KEY }}
+          AIRTABLE_BASE_ID:     ${{ secrets.AIRTABLE_BASE_ID }}
+          AIRTABLE_TABLE_NAME:  ${{ secrets.AIRTABLE_TABLE_NAME }}
+          LINKEDIN_EMAIL:       ${{ secrets.LINKEDIN_EMAIL }}
+          LINKEDIN_PASSWORD:    ${{ secrets.LINKEDIN_PASSWORD }}
+          NAUKRI_EMAIL:         ${{ secrets.NAUKRI_EMAIL }}
+          NAUKRI_PASSWORD:      ${{ secrets.NAUKRI_PASSWORD }}
+          SENDER_EMAIL:         ${{ secrets.SENDER_EMAIL }}
+          CANDIDATE_NAME:       ${{ secrets.CANDIDATE_NAME }}
+          CANDIDATE_LINKEDIN:   ${{ secrets.CANDIDATE_LINKEDIN }}
+          CANDIDATE_PHONE:      ${{ secrets.CANDIDATE_PHONE }}
+          GMAIL_CREDENTIALS_PATH: data/gmail_credentials.json
+          GMAIL_TOKEN_PATH:       data/gmail_token.json
+          PLAYWRIGHT_HEADLESS:    "true"
+        run: |
+          MODE="${{ github.event.inputs.mode || 'full' }}"
+          python crew.py --mode $MODE
+
+      - name: Upload daily report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: daily-report-${{ github.run_id }}
+          path: reports/
+          retention-days: 30
+
+      - name: Upload logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: run-logs-${{ github.run_id }}
+          path: logs/
+          retention-days: 14
